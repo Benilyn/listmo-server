@@ -4,11 +4,15 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 
 const userRouter = require('./router/userRouter');
+const projectRouter = require('./router/projectRouter');
+const taskRouter = require('./router/taskRouter');
 
 mongoose.Promise = global.Promise;
 
 const {PORT, DATABASE_URL} = require('./config');
 const {User} = require('./models/userModel');
+const {Project} = require('./models/projectModel');
+const {Task} = require('./models/taskModel');
 
 const app = express();
 
@@ -17,6 +21,8 @@ app.use(morgan('common'));
 app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use('/user', userRouter);
+app.use('/project', projectRouter);
+app.use('/task', taskRouter);
 
 app.use('*', function(req, res) {
   return res.status(404).json({message: 'Not Found'});

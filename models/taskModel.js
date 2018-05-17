@@ -1,19 +1,18 @@
 const mongoose = require('mongoose');
 
 const TaskSchema = mongoose.Schema({
-	title:{type: String, required: true},
-	dueDate: {type: Date},
-	details:{type: String},
-	projectTask: {type: String}
+	taskTitle:{type: String, required: true},
+	taskDueDate: {type: Date},
+	taskDetail:{type: String},
+	taskTask: {type: String}
 });
 
 TaskSchema.methods.apiRepr = function() {
 	return {
 		id: this._id,
-		title: this.title,
-		dueDate: this.dueDate,
-		details: this.details,
-		projectTask: this.projectTask
+		taskTitle: this.taskTitle,
+		taskDueDate: this.taskDueDate,
+		taskDetail: this.taskDetail
 	};
 };
 

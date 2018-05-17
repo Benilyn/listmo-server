@@ -8,7 +8,7 @@ const userRouter = require('./router/userRouter');
 mongoose.Promise = global.Promise;
 
 const {PORT, DATABASE_URL} = require('./config');
-const {User} = require('./models');
+const {User} = require('./models/userModel');
 
 const app = express();
 

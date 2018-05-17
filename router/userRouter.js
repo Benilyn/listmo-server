@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const {User} = require('../models');
+const {User} = require('../models/userModel');
 const {PORT, DATABASE_URL} = require('../config');
 
 router.post('/', (req, res) => {

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const TaskSchema = mongoose.Schema({
-	taskTitle:{type: String, required: true},
+	taskTitle: {type: mongoose.Schema.ObjectId, ref: 'Project'},
 	taskDueDate: {type: Date},
 	taskDetail:{type: String},
 	taskTask: {type: String}
@@ -10,7 +10,7 @@ const TaskSchema = mongoose.Schema({
 TaskSchema.methods.apiRepr = function() {
 	return {
 		id: this._id,
-		taskTitle: this.taskTitle,
+		taskTitle: this.project.projectTask,
 		taskDueDate: this.taskDueDate,
 		taskDetail: this.taskDetail
 	};

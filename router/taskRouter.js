@@ -17,11 +17,14 @@ router.post('/', (req, res) => {
 
 	Task
 		.create({
+			project: req.body.project,
 			taskTitle: req.body.taskTitle,
-			taskDueDate: req.body.taskDue,
+			taskDueDate: req.body.taskDueDate,
 			taskDetail: req.body.taskDetail,
-			projectTask: req.body.taskTask
+		//	projectTask: req.body.taskTask
 			})
+	//	.then(
+	//		task => task.populate('project'))
 		.then (
 			task => res.status(201).json(task.apiRepr()))
 		.catch(err => {

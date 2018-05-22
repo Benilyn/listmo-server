@@ -33,6 +33,7 @@ router.post('/', (req, res) => {
 router.get('/', (req, res) => {
 	Project
 		.find()
+		.populate('projectTask')
 		.exec()
 		.then(projects => {
 			res.json(projects.map(project => project.apiRepr()));

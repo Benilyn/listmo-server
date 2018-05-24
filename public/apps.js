@@ -28,7 +28,14 @@ $(document).ready(function() {
 	}); //$('.signup-page').submit(function() 
 
 	$('#cancel-signup').click(function() {
+		$('.signup-page input').val('');
 	}); //$('#cancel-signup').click(function()
+
+	$('#submit-addproject').click(function() {
+		addProject();
+		$('.addproject-page input').val('');
+
+	});
 });
 
 function signUp() {
@@ -48,3 +55,26 @@ function signUp() {
 		console.log(res);
 	}); //.then function
 } //signUp function
+
+function addProject() {
+	event.preventDefault();
+	const projectData = {
+		projectTitle: $('.addproject-page [name="projectTitle"]').val(),
+		projectDueDate: $('.addproject-page [name="projectDueDate"]').val(),
+		projectDetail: $('.addproject-page [name="projectDetail"]').val(),
+		projectTask: $('.addproject-page [name="projectTask"]').val()
+	};
+	$.ajax('/project', {
+		contentType: 'application/json',
+		data: JSON.stringify(projectData),
+		type: 'POST'})
+	.then(function(res) {
+		console.log(res);
+	})
+	.fail(function(err) {
+		console.log(err);
+	})
+}
+
+
+

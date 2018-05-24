@@ -32,10 +32,17 @@ $(document).ready(function() {
 	}); //$('#cancel-signup').click(function()
 
 	$('#submit-addproject').click(function() {
+		$('.addproject-page input').val('');
 		addProject();
 		getProjectList();
-		$('.addproject-page input').val('');
+	});
 
+	$('#display-projects').click(function() {
+		getProjectList();
+	});
+
+	$('#hide-projects').click(function() {
+		$('ul#projectlist').empty();
 	});
 });
 
@@ -89,8 +96,8 @@ function getProjectList() {
 		$.each(projects, function(index, project) {
 			var $project = $('<li class="project"></li>').appendTo($projects);
 			$('<span class="projectTitle">' + project.projectTitle + '</span>').appendTo($project);
-		})
-	})
+		});
+	});
 }
 
 

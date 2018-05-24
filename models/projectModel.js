@@ -4,7 +4,7 @@ const projectSchema = mongoose.Schema({
 	projectTitle:{type: String, required: true},
 	projectDueDate: {type: Date},
 	projectDetail:{type: String},
-	projectTask: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Task' }]
+	projectTask: {type: String}
 });
 
 projectSchema.methods.apiRepr = function() {

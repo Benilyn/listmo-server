@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+	<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+</head>
+<body>
+	<div id="login-page">
+		<form class="login-page">
+			<fieldset name="login-info">
+				<legend>Log in</legend>
+				<input type="text" name="userName" placeholder="Username">
+				<input type="password" name="password" placeholder="1234passw0rd">
+				<button id="login" type="submit">Log In</button>	
+			</fieldset>
+		</form> <!-- .login-page -->
+	</div>
+
+	<div id="signup-page">
+		<form class="signup-page">
+			<fieldset name='signup-info'>
+				<legend>Sign Up</legend>
+				<input type="text" name="firstName" placeholder="First name">
+				<input type="text" name="lastName" placeholder="Last name">
+				<input type="text" name="userName" placeholder="Username">
+				<input type="email" name="email" placeholder="email@address.com">
+				<input type="password" name="password" placeholder="1234passw0rd">
+				<div id="signup-buttons">
+					<button type="button" id="submit-signup">Submit</button>
+					<button type="button" id="cancel-signup">Cancel</button>
+				</div>
+			</fieldset>
+		</form> <!-- .signup-page -->
+	</div> <!-- #signup-page -->
+
+	<div id="addproject-page">
+		<form class="addproject-page">
+			<fieldset name="addproject-info">
+				<legend>Add Project</legend>
+				<input type="text" name="projectTitle" placeholder="Project Title">
+				<input type="date" name="projectDueDate" placeholder="Project due date">
+				<input type="text" name="projectDetail" placeholder="Project Detail">
+				<input type="test" name="projectTask" placeholder="projectTask">
+				<div id="addproject-buttons">
+					<button type="button" id="submit-addproject">Submit</button>
+					<button type="button" id="cancel-addproject">Cancel</button>
+				</div>
+			</fieldset>
+		</form> <!-- .addproject-page -->
+	</div> <!-- #addproject-page -->
+
+	<script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+	<script type="text/javascript", src="apps.js"></script>
+</body>
+</html>

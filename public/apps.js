@@ -33,6 +33,7 @@ $(document).ready(function() {
 
 	$('#submit-addproject').click(function() {
 		addProject();
+		getProjectList();
 		$('.addproject-page input').val('');
 
 	});
@@ -73,6 +74,22 @@ function addProject() {
 	})
 	.fail(function(err) {
 		console.log(err);
+	});
+}
+
+function getProjectList() {
+	$.ajax({
+		type: 'GET',
+		url: '/project'
+	})
+	.then(function(projects) {
+		console.log(projects);
+		var $projects = $('ul#projectlist');
+		$projects.empty();
+		$.each(projects, function(index, project) {
+			var $project = $('<li class="project"></li>').appendTo($projects);
+			$('<span class="projectTitle">' + project.projectTitle + '</span>').appendTo($project);
+		})
 	})
 }
 

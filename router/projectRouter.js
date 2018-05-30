@@ -12,7 +12,7 @@ router.post('/', (req, res) => {
 			const message = `Missing \`${field}\` in request body`;
 			console.error(message);
 			return res.status(400).send(message);
-		} //if (!(field in req.body)) 
+		} //if (!(field in req.body))
 	} //for (let i=0)
 
 	Project
@@ -90,6 +90,19 @@ router.put('/:id', (req, res) => {
     	.catch(err => res.status(500).json({message: 'Internal server error'}));
 }); //router.put
 
-
+router.delete('/:id', (req, res) => {
+	Project
+		.findOneAndRemove({_id: req.params.id})
+		.exec()
+		.then((delproj) => {
+			console.log(delproj);
+			console.log(`Deleted project \`${req.params.id}\``);
+			res.status(204).end();
+		})
+		.catch(err => {
+			console.log(err);
+			res.status(500).json({error: 'Unable to delete project'});
+		});
+}); //router.delete
 
 module.exports = router;

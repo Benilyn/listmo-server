@@ -3,7 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const fs = require('fs');
 const morgan = require('morgan');
-
+const cors = require('cors');
 
 const userRouter = require('./router/userRouter');
 const projectRouter = require('./router/projectRouter');
@@ -23,6 +23,7 @@ const MongoStore = require('connect-mongo')(session);
 const app = express();
 
 // logging
+app.use(cors());
 app.use(morgan('dev'));
 app.use(morgan('common'));
 app.use(express.static('public'));
@@ -50,7 +51,7 @@ app.use(passport.session());
 //--------------------------------
 
 const localStrategy = require('passport-local').Strategy;
-passport.use(new localStrategy(  
+passport.use(new localStrategy(
     {
         usernameField: 'userName',
         passwordField: 'password'
@@ -66,11 +67,11 @@ passport.use(new localStrategy(
     } //function(email, password, done)
 )); //passport.use
 
-passport.serializeUser(function(user, done) {  
+passport.serializeUser(function(user, done) {
     done(null, user.id);
 }); //passport.serializeUser
 
-passport.deserializeUser(function(id, done) {  
+passport.deserializeUser(function(id, done) {
     User.findOne({ _id: id })
       .then(function(user) {
           done(null, user);
@@ -145,4 +146,3 @@ app.get('/login', (req, res) => {
 });
 
 module.exports = {app, runServer, closeServer};
-

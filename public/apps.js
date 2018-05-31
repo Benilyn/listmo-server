@@ -10,7 +10,7 @@ $(document).ready(function() {
 		$.ajax('/login', {
 			contentType: 'application/json',
 			data: JSON.stringify(loginData),
-			type: 'POST'}) 
+			type: 'POST'})
 		.then(function(res) {
 			console.log(res);
 		}) //.then function
@@ -25,7 +25,7 @@ $(document).ready(function() {
 
 	$('#submit-signup').click(function() {
 		signUp();
-	}); //$('.signup-page').submit(function() 
+	}); //$('.signup-page').submit(function()
 
 	$('#cancel-signup').click(function() {
 		$('.signup-page input').val('');
@@ -50,7 +50,7 @@ $(document).ready(function() {
 		getProjectInfo(projectInfo);
 	});
 
-	
+
 });
 
 function signUp() {
@@ -65,7 +65,7 @@ function signUp() {
 	$.ajax('/user', {
 		contentType: 'application/json',
 		data: JSON.stringify(userData),
-		type: 'POST'}) 
+		type: 'POST'})
 	.then(function(res) {
 		console.log(res);
 	}); //.then function
@@ -109,15 +109,14 @@ function getProjectList() {
 }
 
 function getProjectInfo(projectInfo) {
-	$.ajax({
+	$.ajax('/project/' + projectInfo.id, {
 		type: 'GET',
-		url: '/project',
 		data: {projectInfo: projectInfo.id}
 	})
-	.then(function() {
-		console.log(projectInfo);
+	.then(function(result) {
+		console.log(result.projectDueDate);
+		$('#project-info .project-title').text(result.projectTitle);
+		$('#project-info .project-duedate').text(result.projectDueDate);
+		$('#project-info .project-detail').text(result.projectDetail);
 	});
 }
-
-
-

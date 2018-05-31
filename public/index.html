@@ -41,7 +41,6 @@
 				<input type="text" name="projectTitle" placeholder="Project Title">
 				<input type="date" name="projectDueDate" placeholder="Project due date">
 				<input type="text" name="projectDetail" placeholder="Project Detail">
-				<input type="test" name="projectTask" placeholder="projectTask">
 				<div id="addproject-buttons">
 					<button type="button" id="submit-addproject">Submit</button>
 					<button type="button" id="cancel-addproject">Cancel</button>
@@ -54,15 +53,31 @@
 		<h3>Project List</h3>
 		<button id="display-projects">Show Projects</button>
 		<button id="hide-projects">Hide Projects</button>
-		<button id="edit-projects">Edit</button>
 		<ul id="projectlist">
 		</ul>
 	</div> <!-- #rojectlist-page -->
 
 	<div id="project-page" style="border:groove">
-		<h3>Project</h3>
-		<div id="projectinfo">
+		<h3> Project</h3>
+		<div id="project-info">
+			<span class="project-title">Title</span><br>
+			<span class="project-duedate">Due Date</span><br>
+			<span class="project-detail">Details</span><br>
 		</div>
+		<button id="add-project-task">Add Task</button>
+		<button id="edit-project">Edit</button>
+		<form id="add-task-form" class="">
+			<fieldset name="add-task-info">
+				<legend>Add Task</legend>
+				<input type="text" name="taskTitle" placeholder="Task Title">
+				<input type="date" name="taskDueDate" placeholder="Task due date">
+				<input type="text" name="taskDetail" placeholder="Task Detail">
+				<div id="add-task-buttons">
+					<button type="button" id="submit-addtask">Submit</button>
+					<button type="button" id="cancel-addtask">Cancel</button>
+				</div>
+			</fieldset>
+		</form> <!-- #add-task-form -->
 	</div> <!-- #rojectlist-page -->
 
 	<script src="https://code.jquery.com/jquery-3.1.0.js"></script>

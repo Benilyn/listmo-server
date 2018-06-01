@@ -1,3 +1,4 @@
+let currentProject;
 $(document).ready(function() {
 
 	$('.login-page').submit(function(event) {
@@ -50,6 +51,16 @@ $(document).ready(function() {
 		getProjectInfo(projectInfo);
 	});
 
+	$('#add-project-task').on('click', function() {
+		console.log(currentProject);
+		$('#add-task-form').show();
+	});
+
+	$('#submit-addtask').click(function() {
+		addTask(currentProject);
+		$('#add-task-form input').val('');
+	});
+
 
 });
 
@@ -78,8 +89,7 @@ function addProject() {
 		projectDueDate: $('.addproject-page [name="projectDueDate"]').val(),
 		projectDetail: $('.addproject-page [name="projectDetail"]').val(),
 		projectTask: $('.addproject-page [name="projectTask"]').val()
-	};
-//	console.log(projectData);
+	}; //const projectData
 	$.ajax('/project', {
 		contentType: 'application/json',
 		data: JSON.stringify(projectData),
@@ -90,7 +100,7 @@ function addProject() {
 	.fail(function(err) {
 		console.log(err);
 	});
-}
+} //addProject function
 
 function getProjectList() {
 	$.ajax({
@@ -114,9 +124,30 @@ function getProjectInfo(projectInfo) {
 		data: {projectInfo: projectInfo.id}
 	})
 	.then(function(result) {
-		console.log(result.projectDueDate);
+		console.log(result);
+		currentProject = result;
 		$('#project-info .project-title').text(result.projectTitle);
 		$('#project-info .project-duedate').text(result.projectDueDate);
 		$('#project-info .project-detail').text(result.projectDetail);
 	});
 }
+
+function addTask(currentProject) {
+	console.log(currentProject);
+	const taskData = {
+		taskTitle: $('#add-task-form [name="taskTitle"]').val(),
+		taskDueDate: $('#add-task-form [name="taskDueDate"]').val(),
+		taskDetail: $('#add-task-form [name="taskDetail"]').val(),
+		taskProject: currentProject.id
+	}; //const projectData
+	$.ajax('/task', {
+		contentType: 'application/json',
+		data: JSON.stringify(taskData),
+		type: 'POST'})
+	.then(function(res) {
+		console.log(res);
+	})
+	.fail(function(err) {
+		console.log(err);
+	});
+} //addProject function

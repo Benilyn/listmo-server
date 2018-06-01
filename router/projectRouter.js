@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const {Project} = require('../models/projectModel');
+const {Task} = require('../models/taskModel');
 const {PORT, DATABASE_URL} = require('../config');
 
 router.post('/', (req, res) => {
@@ -18,9 +19,8 @@ router.post('/', (req, res) => {
 	Project
 		.create({
 			projectTitle: req.body.projectTitle,
-			projectDueDate: req.body.projectDue,
-			projectDetail: req.body.projectDetail,
-			projectTask: req.body.projectTask
+			projectDueDate: req.body.projectDueDate,
+			projectDetail: req.body.projectDetail
 			})
 		.then (
 			project => res.status(201).json(project.apiRepr()))
@@ -34,10 +34,22 @@ router.get('/', (req, res) => {
 	Project
 		.find()
 //		.populate('projectTask')
-		.exec()
+//		.exec((e, project) => {console.log(project)})
 		.then(projects => {
-			res.json(projects.map(project => project.apiRepr()));
-		})
+			let projectTasks = [];
+			projects.map(project => {
+
+				Task.find({taskProject: project._id})
+				.then(tasks => {
+					project.projectTask = tasks;
+					projectTasks.push(project.apiRepr());
+				}) //.then(tasks => {
+			}) //projects.map
+			setTimeout(function () {
+				res.json(projectTasks);
+			}, 100);
+
+		}) //.then(projects => {
 		.catch(err => {
 			console.error(err);
 			res.status(500).json({error: 'Something went wrong'});

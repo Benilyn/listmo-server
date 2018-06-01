@@ -12,16 +12,15 @@ router.post('/', (req, res) => {
 			const message = `Missing \`${field}\` in request body`;
 			console.error(message);
 			return res.status(400).send(message);
-		} //if (!(field in req.body)) 
+		} //if (!(field in req.body))
 	} //for (let i=0)
 
 	Task
 		.create({
-			project: req.body.project,
+			taskProject: req.body.taskProject,
 			taskTitle: req.body.taskTitle,
 			taskDueDate: req.body.taskDueDate,
-			taskDetail: req.body.taskDetail,
-		//	projectTask: req.body.taskTask
+			taskDetail: req.body.taskDetail
 			})
 	//	.then(
 	//		task => task.populate('project'))

@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
+const Task = require('./taskModel.js');
 
 const projectSchema = mongoose.Schema({
 	projectTitle:{type: String, required: true},
 	projectDueDate: {type: Date},
 	projectDetail:{type: String},
-	projectTask: {type: String}
+	projectTask: [{type: mongoose.Schema.ObjectId, ref: 'Task'}]
 });
 
 projectSchema.methods.apiRepr = function() {

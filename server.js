@@ -60,7 +60,7 @@ passport.use(new localStrategy(
         User.findOne({ userName: userName })
           .then(function(user) {
               if (!user || !user.password === password) {
-                  return done(null, false, { message: 'Incorrect email or password.' });
+                  return done(null, false, { message: 'Incorrect username or password.' });
               }
               done(null, user);
           }); //.then function

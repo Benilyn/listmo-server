@@ -3,7 +3,7 @@ const Task = require('./taskModel.js');
 
 const projectSchema = mongoose.Schema({
 	projectTitle:{type: String, required: true},
-	projectDueDate: {type: Date},
+	projectDueDate: {type: String, default: ''},
 	projectDetail:{type: String},
 	projectTask: [{type: mongoose.Schema.ObjectId, ref: 'Task'}]
 });

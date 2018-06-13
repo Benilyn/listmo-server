@@ -86,21 +86,23 @@ router.put('/:id', (req, res) => {
      		error: 'Request path id and request body id values must match'
     	}); //res.status(400)
  	} //if
+	else{
+		const updated = {};
+		const updateableFields = ['projectTitle', 'projectDueDate', 'projectDetail'];
+		updateableFields.forEach(field => {
+	    	if (field in req.body) {
+	    		updated[field] = req.body[field];
+	    	}
+	  	}); //updateableFields
 
-	const updated = {};
-	const updateableFields = ['projectTitle', 'projectDueDate', 'projectDetail'];
-	updateableFields.forEach(field => {
-    	if (field in req.body) {
-    		updated[field] = req.body[field];
-    	}
-  	}); //updateableFields
-
-  	Project
-    	.findByIdAndUpdate(req.params.id, {$set: updated}, {new: true})
-    	.exec()
-    	.then(updatedProject => res.status(201).json(updatedProject.apiRepr()))
-    	.catch(err => res.status(500).json({message: 'Internal server error'}));
+	  	Project
+	    	.findByIdAndUpdate(req.params.id, {$set: updated}, {new: true})
+	    	.exec()
+	    	.then(updatedProject => res.status(201).json(updatedProject.apiRepr()))
+	    	.catch(err => res.status(500).json({message: 'Internal server error'}));
+	}
 }); //router.put
+
 
 router.delete('/:id', (req, res) => {
 	Project

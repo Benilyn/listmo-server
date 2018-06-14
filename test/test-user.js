@@ -126,6 +126,42 @@ describe('Users API resource', function() {
 		}); //'should delete a user by id', function()
 	}); //'User DELETE endpoint', function()
 
+	describe('User PUT endpoint', function() {
+		it('should update fields you send over', function() {
+			const updateUser = {
+				firstName: faker.name.firstName(),
+				lastName: faker.name.lastName(),
+				email: faker.internet.email(),
+				password: faker.internet.password()
+			};
+
+			return User
+				.findOne()
+				.exec()
+				.then(function(user) {
+					updateUser.id = user.id;
+					return chai.request(app)
+						.put(`/user/${user.id}`)
+						.send(updateUser);
+				})
+				.then(function(res) {
+					console.log(res.body);
+					res.should.have.status(201);
+					res.body.firstName.should.equal(updateUser.firstName);
+					res.body.lastName.should.equal(updateUser.lastName);
+					res.body.email.should.equal(updateUser.email);
+					res.body.password.should.equal(updateUser.password);
+					return User.findById(updateUser.id).exec();
+				})
+				.then(function(user) {
+					user.firstName.should.equal(updateUser.firstName);
+					user.lastName.should.equal(updateUser.lastName);
+					user.email.should.equal(updateUser.email);
+					user.password.should.equal(updateUser.password);	
+				});
+		}); //'should update fields you send over', function()
+	}); //'User PUT endpoint', function()
+
 
 
 }); //'Users API resource'

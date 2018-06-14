@@ -120,7 +120,7 @@ describe('Projects API resource', function() {
   }); //describe('Project on POST endpoint'
 
   describe('Project DELETE endpoint', function() {
-		it.only('should delete a project by id', function() {
+		it('should delete a project by id', function() {
 			let project;
 			return Project
 				.findOne()
@@ -138,5 +138,41 @@ describe('Projects API resource', function() {
 				});
 		}); //'should delete a project by id', function()
 	}); //'Project DELETE endpoint', function()
+
+  describe('Project PUT endpoint', function() {
+		it.only('should update fields you send over', function() {
+			const updateProject = {
+        projectTitle: faker.lorem.words(3),
+        projectDueDate: faker.date.past(),
+        projectDetail: faker.lorem.sentence(),
+        projectTask: faker.random.arrayElement(3)
+			};
+
+			return Project
+				.findOne()
+				.exec()
+				.then(function(project) {
+					updateProject.id = project.id;
+					return chai.request(app)
+						.put(`/project/${project.id}`)
+						.send(updateProject);
+				})
+				.then(function(res) {
+					console.log(res.body);
+					res.should.have.status(201);
+					res.body.projectTitle.should.equal(updateProject.projectTitle);
+//					res.body.projectDueDate.should.equal(updateProject.projectDueDate);
+					res.body.projectDetail.should.equal(updateProject.projectDetail);
+//					res.body.projectTask.should.equal(updateProject.projectTask);
+					return Project.findById(updateProject.id).exec();
+				})
+				.then(function(project) {
+					project.projectTitle.should.equal(updateProject.projectTitle);
+//					project.projectDueDate.should.equal(updateProject.projectDueDate);
+					project.projectDetail.should.equal(updateProject.projectDetail);
+//					project.projectTask.should.equal(updateProject.projectTask);
+				});
+		}); //'should update fields you send over', function()
+	}); //'Project PUT endpoint', function
 
 }); // describe('Projects API resource')

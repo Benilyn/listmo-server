@@ -157,10 +157,37 @@ describe('Users API resource', function() {
 					user.firstName.should.equal(updateUser.firstName);
 					user.lastName.should.equal(updateUser.lastName);
 					user.email.should.equal(updateUser.email);
-					user.password.should.equal(updateUser.password);	
+					user.password.should.equal(updateUser.password);
 				});
 		}); //'should update fields you send over', function()
-	}); //'User PUT endpoint', function()
+	}); //'User PUT endpoint', function
+
+	describe('test User login', function() {
+		it('should login a user', function() {
+			let user;
+			return User
+				.findOne()
+				.exec()
+				.then(function(_user) {
+					user = _user;
+					return chai.request(app).get(`/user/${user._id}`);
+				})
+				.then(function(res) {
+					res.should.have.status(200);
+					return User.findById(user._id).exec();
+				})
+				.then(function(user) {
+					console.log(user);
+					return chai.request(app)
+						.post('/login')
+						.send({userName: user.userName, password: user.password})
+						.then(function(res) {
+							res.should.have.status(200);
+						});
+				});
+		}); //'should login a user, function()
+
+	}); //test User login
 
 
 

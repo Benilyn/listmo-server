@@ -70,7 +70,7 @@ describe('Projects API resource', function() {
 			});
 		}); //it(should return all)
 
-    it.only('should return projects with right fields', function() {
+    it('should return projects with right fields', function() {
 			return chai.request(app)
 				.get('/project')
 				.then(function(res) {
@@ -78,7 +78,6 @@ describe('Projects API resource', function() {
 					res.should.be.json;
 					res.body.should.be.a('array');
 					res.body.length.should.be.at.least(1);
-
 					res.body.forEach(function(project) {
 						project.should.be.a('object');
 						project.should.include.keys(
@@ -90,4 +89,54 @@ describe('Projects API resource', function() {
 				});
 		}); //it(should return whines with right fields)
   }); //describe('Project on GET endpoint'
+
+  describe('Project on POST endpoint', function() {
+    it('should add a project', function() {
+      const newProject = {
+        projectTitle: faker.lorem.words(3),
+        projectDueDate: faker.date.past(),
+        projectDetail: faker.lorem.sentence(),
+        projectTask: faker.random.arrayElement(3)
+      }; //const newProject
+      return chai.request(app)
+        .post('/project')
+        .send(newProject)
+        .then(function(res) {
+          res.should.have.status(201);
+          res.should.be.json;
+          res.body.should.be.a('object');
+          res.body.should.include.keys(
+            'id', 'projectTitle', 'projectDueDate', 'projectDetail', 'projectTask');
+          res.body.id.should.not.be.null;
+          res.body.projectTitle.should.equal(newProject.projectTitle);
+//          res.body.projectDueDate.should.equal(newProject.projectDueDate);
+          res.body.projectDetail.should.equal(newProject.projectDetail);
+//          res.body.projectTask.should.equal(newProject.projectTask);
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+    }); //should add a project
+  }); //describe('Project on POST endpoint'
+
+  describe('Project DELETE endpoint', function() {
+		it.only('should delete a project by id', function() {
+			let project;
+			return Project
+				.findOne()
+				.exec()
+				.then(function(_project) {
+					project = _project;
+					return chai.request(app).delete(`/project/${project._id}`);
+				})
+				.then(function(res) {
+					res.should.have.status(204);
+					return Project.findById(project._id).exec();
+				})
+				.then(function(_project) {
+					should.not.exist(_project);
+				});
+		}); //'should delete a project by id', function()
+	}); //'Project DELETE endpoint', function()
+
 }); // describe('Projects API resource')

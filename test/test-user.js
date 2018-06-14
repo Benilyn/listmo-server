@@ -106,6 +106,26 @@ describe('Users API resource', function() {
 		}); //'should add a new user'
 	}); //'User POST endpoint', function()
 
+	describe('User DELETE endpoint', function() {
+		it('should delete a user by id', function() {
+			let user;
+			return User
+				.findOne()
+				.exec()
+				.then(function(_user) {
+					user = _user;
+					return chai.request(app).delete(`/user/${user._id}`);
+				})
+				.then(function(res) {
+					res.should.have.status(204);
+					return User.findById(user._id).exec();
+				})
+				.then(function(_user) {
+					should.not.exist(_user);
+				});
+		}); //'should delete a user by id', function()
+	}); //'User DELETE endpoint', function()
+
 
 
 }); //'Users API resource'

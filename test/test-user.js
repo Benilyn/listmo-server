@@ -24,7 +24,7 @@ function generateUsers() {
 	return {
 		firstName: faker.name.firstName(),
 		lastName: faker.name.lastName(),
-		userName: faker.random.alphaNumeric(),
+		userName: faker.internet.userName(),
 		email: faker.internet.email(),
 		password: faker.internet.password()
 	};
@@ -83,7 +83,7 @@ describe('Users API resource', function() {
 				firstName: faker.name.firstName(),
 				lastName: faker.name.lastName(),
 				email: faker.internet.email(),
-				userName: faker.random.alphaNumeric(),
+				userName: faker.internet.userName(),
 				password: faker.internet.password()
 			}; //const newUser
 

@@ -49,7 +49,7 @@ describe('Projects API resource', function() {
 	}); //after function
 
   describe('Project on GET endpoint', function() {
-    it.only('should return all existing projects', function() {
+    it('should return all existing projects', function() {
 //      console.log(projects);
 			let res;
 			return chai.request(app)
@@ -69,5 +69,25 @@ describe('Projects API resource', function() {
 				console.error(err);
 			});
 		}); //it(should return all)
+
+    it.only('should return projects with right fields', function() {
+			return chai.request(app)
+				.get('/project')
+				.then(function(res) {
+					res.should.have.status(200);
+					res.should.be.json;
+					res.body.should.be.a('array');
+					res.body.length.should.be.at.least(1);
+
+					res.body.forEach(function(project) {
+						project.should.be.a('object');
+						project.should.include.keys(
+							'id', 'projectTitle', 'projectDueDate', 'projectTask');
+					}); //.forEach function
+				}) //.then function(res)
+				.catch(function(err){
+					console.error(err);
+				});
+		}); //it(should return whines with right fields)
   }); //describe('Project on GET endpoint'
 }); // describe('Projects API resource')

@@ -40,7 +40,7 @@ describe('Projects API resource', function() {
   }); //beforeEach
 
   afterEach(function() {
-    console.warn('Deleting prroject database');
+    console.warn('Deleting project database');
     return mongoose.connection.dropDatabase();
   }); //afterEach
 
@@ -140,7 +140,7 @@ describe('Projects API resource', function() {
 	}); //'Project DELETE endpoint', function()
 
   describe('Project PUT endpoint', function() {
-		it.only('should update fields you send over', function() {
+		it('should update fields you send over', function() {
 			const updateProject = {
         projectTitle: faker.lorem.words(3),
         projectDueDate: faker.date.past(),

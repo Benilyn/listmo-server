@@ -141,8 +141,7 @@ describe('Task API resource', function() {
 			const updateTask = {
         taskTitle: faker.lorem.words(3),
         taskDueDate: faker.date.past(),
-        taskDetail: faker.lorem.sentence(),
-        taskTask: faker.random.arrayElement(3)
+        taskDetail: faker.lorem.sentence()
 			};
 
 			return Task

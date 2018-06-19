@@ -116,5 +116,25 @@ describe('Task API resource', function() {
     }); //should add a task
   }); //describe('Task on POST endpoint'
 
+  describe('Task DELETE endpoint', function() {
+		it('should delete a task by id', function() {
+			let task;
+			return Task
+				.findOne()
+				.exec()
+				.then(function(_task) {
+					task = _task;
+					return chai.request(app).delete(`/task/${task._id}`);
+				})
+				.then(function(res) {
+					res.should.have.status(204);
+					return Task.findById(task._id).exec();
+				})
+				.then(function(_task) {
+					should.not.exist(_task);
+				});
+		}); //'should delete a task by id', function()
+	}); //'Task DELETE endpoint', function()
+
 
 }); //describe('Task API resource'

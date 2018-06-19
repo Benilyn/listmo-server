@@ -136,5 +136,37 @@ describe('Task API resource', function() {
 		}); //'should delete a task by id', function()
 	}); //'Task DELETE endpoint', function()
 
+  describe('Task PUT endpoint', function() {
+		it('should update fields you send over', function() {
+			const updateTask = {
+        taskTitle: faker.lorem.words(3),
+        taskDueDate: faker.date.past(),
+        taskDetail: faker.lorem.sentence(),
+        taskTask: faker.random.arrayElement(3)
+			};
+
+			return Task
+				.findOne()
+				.exec()
+				.then(function(task) {
+					updateTask.id = task.id;
+					return chai.request(app)
+						.put(`/task/${task.id}`)
+						.send(updateTask);
+				})
+				.then(function(res) {
+					console.log(res.body);
+					res.should.have.status(201);
+					res.body.taskTitle.should.equal(updateTask.taskTitle);
+					res.body.taskDetail.should.equal(updateTask.taskDetail);
+					return Task.findById(updateTask.id).exec();
+				})
+				.then(function(task) {
+					task.taskTitle.should.equal(updateTask.taskTitle);
+					task.taskDetail.should.equal(updateTask.taskDetail);
+				});
+		}); //'should update fields you send over', function()
+	}); //'Task PUT endpoint', function
+
 
 }); //describe('Task API resource'

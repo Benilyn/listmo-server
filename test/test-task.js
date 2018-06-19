@@ -91,7 +91,7 @@ describe('Task API resource', function() {
   }); //describe('Task GET endpoint'
 
   describe('Task on POST endpoint', function() {
-    it.only('should add a task', function() {
+    it('should add a task', function() {
       const newTask = {
         taskTitle: faker.lorem.words(3),
         taskDueDate: faker.date.past(),

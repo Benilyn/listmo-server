@@ -16,7 +16,7 @@ function generateTaskData() {
     taskTitle: faker.lorem.words(3),
     taskDueDate: faker.date.past(),
     taskDetail: faker.lorem.sentence(),
-//    taskProject: faker.random.objectElement()
+//    tasktask: faker.random.objectElement()
   };
 } // function generateTaskData
 
@@ -26,7 +26,7 @@ function seedTaskData() {
     seedTasks.push(generateTaskData());
   }
   return Task.insertMany(seedTasks);
-} // function seedProjectData
+} // function seedTaskData
 
 describe('Task API resource', function() {
   before(function() {
@@ -50,7 +50,7 @@ describe('Task API resource', function() {
 
   describe('Task GET endpoint', function() {
     it('should return all existing tasks', function() {
-  //      console.log(projects);
+  //      console.log(tasks);
       let res;
       return chai.request(app)
       .get('/task')
@@ -70,7 +70,7 @@ describe('Task API resource', function() {
       });
     }); //it(should return all)
 
-    it.only('should return task with right fields', function() {
+    it('should return task with right fields', function() {
 			return chai.request(app)
 				.get('/task')
 				.then(function(res) {
@@ -88,8 +88,33 @@ describe('Task API resource', function() {
 					console.error(err);
 				});
 		}); //it(should return whines with right fields)
-
   }); //describe('Task GET endpoint'
+
+  describe('Task on POST endpoint', function() {
+    it.only('should add a task', function() {
+      const newTask = {
+        taskTitle: faker.lorem.words(3),
+        taskDueDate: faker.date.past(),
+        taskDetail: faker.lorem.sentence()
+      }; //const newTask
+      return chai.request(app)
+        .post('/task')
+        .send(newTask)
+        .then(function(res) {
+          res.should.have.status(201);
+          res.should.be.json;
+          res.body.should.be.a('object');
+          res.body.should.include.keys(
+            'id', 'taskTitle', 'taskDueDate', 'taskDetail');
+          res.body.id.should.not.be.null;
+          res.body.taskTitle.should.equal(newTask.taskTitle);
+          res.body.taskDetail.should.equal(newTask.taskDetail);
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+    }); //should add a task
+  }); //describe('Task on POST endpoint'
 
 
 }); //describe('Task API resource'

@@ -20,7 +20,8 @@ router.post('/', (req, res) => {
 		.create({
 			projectTitle: req.body.projectTitle,
 			projectDueDate: req.body.projectDueDate,
-			projectDetail: req.body.projectDetail
+			projectDetail: req.body.projectDetail,
+			user: req.body.user
 			})
 		.then (
 			project => res.status(201).json(project.apiRepr()))
@@ -30,11 +31,9 @@ router.post('/', (req, res) => {
 		});
 }); //router.post
 
-router.get('/', (req, res) => {
+router.get('/user/:user', (req, res) => {
 	Project
-		.find()
-//		.populate('projectTask')
-//		.exec((e, project) => {console.log(project)})
+		.find({user: req.params.user})
 		.then(projects => {
 			let projectTasks = [];
 			projects.map(project => {

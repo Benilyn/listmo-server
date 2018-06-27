@@ -5,7 +5,8 @@ const projectSchema = mongoose.Schema({
 	projectTitle:{type: String, required: true},
 	projectDueDate: {type: String, default: ''},
 	projectDetail:{type: String, default: ''},
-	projectTask: [{type: mongoose.Schema.ObjectId, ref: 'Task'}]
+	projectTask: [{type: mongoose.Schema.ObjectId, ref: 'Task'}],
+	user: {type: mongoose.Schema.ObjectId, ref: 'User'}
 });
 
 projectSchema.methods.apiRepr = function() {

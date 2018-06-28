@@ -15,7 +15,8 @@ projectSchema.methods.apiRepr = function() {
 		projectTitle: this.projectTitle,
 		projectDueDate: this.projectDueDate,
 		projectDetail: this.projectDetail,
-		projectTask: this.projectTask
+		projectTask: this.projectTask,
+		user: this.user
 	};
 };
 

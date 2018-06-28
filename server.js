@@ -5,10 +5,13 @@ const fs = require('fs');
 const morgan = require('morgan');
 const cors = require('cors');
 
+const {localStrategy, jwtStrategy} = require('./strategies.js');
+
 const userRouter = require('./router/userRouter');
 const projectRouter = require('./router/projectRouter');
 const taskRouter = require('./router/taskRouter');
 const loginRouter = require('./router/loginRouter');
+const authRouter = require('./router/authRouter');
 
 mongoose.Promise = global.Promise;
 
@@ -21,8 +24,13 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
 const app = express();
+const passport = require('passport');
+passport.use(localStrategy);
+passport.use(jwtStrategy);
+//app.use(passport.initialize());
+//app.use(passport.session());
 
-// logging
+
 app.use(cors());
 app.use(morgan('dev'));
 app.use(morgan('common'));
@@ -31,7 +39,7 @@ app.use(bodyParser.json());
 app.use('/user', userRouter);
 app.use('/project', projectRouter);
 app.use('/task', taskRouter);
-//app.use('/login', loginRouter);
+app.use('/login', authRouter);
 
 app.use(session({
   secret: 'keyboard cat',
@@ -42,52 +50,6 @@ app.use(session({
   })
 }));
 
-const passport = require('passport');
-app.use(passport.initialize());
-app.use(passport.session());
-
-//---------------------------------
-// start of login
-//--------------------------------
-
-const localStrategy = require('passport-local').Strategy;
-passport.use(new localStrategy(
-    {
-        usernameField: 'userName',
-        passwordField: 'password'
-    },
-    function(userName, password, done) {
-        User.findOne({ userName: userName })
-          .then(function(user) {
-              if (!user || !user.password === password) {
-                  return done(null, false, { message: 'Incorrect username or password.' });
-              }
-              done(null, user);
-          }); //.then function
-    } //function(email, password, done)
-)); //passport.use
-
-passport.serializeUser(function(user, done) {
-    done(null, user.id);
-}); //passport.serializeUser
-
-passport.deserializeUser(function(id, done) {
-    User.findOne({ _id: id })
-      .then(function(user) {
-          done(null, user);
-      }) //.then function
-    .catch(function(err) {
-        done(err, null);
-    }); //.catch function
-}); //passport.deserializeUser
-
-app.post ('/login', passport.authenticate('local'), function (req, res) {
-  res.json(req.user.apiRepr());
-}); //router.post
-
-//---------------------------------
-// end of login
-//--------------------------------
 
 
 app.use('*', function(req, res) {

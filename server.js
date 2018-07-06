@@ -96,15 +96,15 @@ if (require.main === module) {
   runServer().catch(err => console.error(err));
 };
 
-app.get('/login', (req, res) => {
-  if (!(req.user)) {
-    const message = 'No user logged in';
-    console.error(message);
-    res.sendStatus(401);
-  }
-  else{
-      res.sendStatus(200);
-  }
-});
+//app.get('/login', (req, res) => {
+//  if (!(req.user)) {
+//    const message = 'No user logged in';
+//    console.error(message);
+//    res.sendStatus(401);
+//  }
+//  else{
+//      res.sendStatus(200);
+//  }
+//});
 
 module.exports = {app, runServer, closeServer};

@@ -12,23 +12,54 @@ router.post('/', (req, res) => {
 			const message = `Missing \`${field}\` in request body`;
 			console.error(message);
 			return res.status(400).send(message);
-		} //if (!(field in req.body)) 
+		} //if (!(field in req.body))
 	} //for (let i=0)
 
-	User
-		.create({
-			firstName: req.body.firstName,
-			lastName: req.body.lastName,
-			userName: req.body.userName,
-			email: req.body.email,
-			password: req.body.password
-			})
-		.then (
-			user => res.status(201).json(user.apiRepr()))
-		.catch(err => {
-			console.error(err);
-			res.status(500).json({message: 'Internal server error'});
-		});
+	let {userName, password, email = '', firstName = '', lastName = ''} = req.body;
+  // Username and password come in pre-trimmed, otherwise we throw an error
+  // before this
+  firstName = firstName.trim();
+  lastName = lastName.trim();
+
+  return User.find({userName})
+    .count()
+    .then(count => {
+			console.log(userName);
+      if (count > 0) {
+				console.log(count);
+        // There is an existing user with the same username
+        return Promise.reject({
+          code: 422,
+          reason: 'ValidationError',
+          message: 'Username already taken',
+          location: 'username'
+        });
+      }
+      // If there is no existing user, hash the password
+      return User.hashPassword(password);
+    })
+    .then(hash => {
+			console.log(hash);
+      return User.create({
+        userName,
+        password: hash,
+				email,
+        firstName,
+        lastName
+      });
+    })
+    .then(user => {
+			console.log(user);
+      return res.status(201).json(user.serialize());
+    })
+    .catch(err => {
+      // Forward validation errors on to the client, otherwise give a 500
+      // error because something unexpected has happened
+      if (err.reason === 'ValidationError') {
+        return res.status(err.code).json(err);
+      }
+      res.status(500).json({code: 500, message: err});
+    });
 }); //router.post
 
 router.get('/', (req, res) => {

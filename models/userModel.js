@@ -11,6 +11,16 @@ const userSchema = mongoose.Schema({
 	password: {type: String, required: true}
 });
 
+userSchema.methods.apiRepr = function() {
+	return {
+		id: this._id,
+		firstName:this.firstName,
+		lastName: this.lastName,
+		userName: this.userName,
+		email: this.email
+	};
+};
+
 
 
 userSchema.methods.serialize = function() {

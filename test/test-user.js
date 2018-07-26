@@ -70,7 +70,7 @@ describe('Users API resource', function() {
 					res.body.forEach(function(user) {
 						user.should.be.a('object');
 						user.should.include.keys(
-							'id', 'firstName', 'lastName', 'email', 'userName', 'password'
+							'id', 'firstName', 'lastName', 'email', 'userName'
 						);
 					}); //forEach function
 				}); //.then function
@@ -150,7 +150,7 @@ describe('Users API resource', function() {
 					res.body.firstName.should.equal(updateUser.firstName);
 					res.body.lastName.should.equal(updateUser.lastName);
 					res.body.email.should.equal(updateUser.email);
-					res.body.password.should.equal(updateUser.password);
+//					res.body.password.should.equal(updateUser.password);
 					return User.findById(updateUser.id).exec();
 				})
 				.then(function(user) {

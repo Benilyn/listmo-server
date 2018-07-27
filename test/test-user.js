@@ -95,7 +95,7 @@ describe('Users API resource', function() {
 					res.should.be.json;
 					res.body.should.be.a('object');
 					res.body.should.include.keys(
-						'id', 'firstName', 'lastName', 'email', 'userName', 'password');
+						'id', 'firstName', 'lastName', 'email', 'userName');
 					res.body.id.should.not.be.null;
 					res.body.firstName.should.equal(newUser.firstName);
 					res.body.lastName.should.equal(newUser.lastName);

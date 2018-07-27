@@ -101,7 +101,6 @@ describe('Users API resource', function() {
 					res.body.lastName.should.equal(newUser.lastName);
 					res.body.email.should.equal(newUser.email);
 					res.body.userName.should.equal(newUser.userName);
-					res.body.password.should.equal(newUser.password);
 				}); //.then function
 		}); //'should add a new user'
 	}); //'User POST endpoint', function()

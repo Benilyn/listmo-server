@@ -179,7 +179,7 @@ describe('Users API resource', function() {
 					console.log(user);
 					return chai.request(app)
 						.post('/login')
-						.send({userName: user.userName, password: user.password})
+						.send({username: user.userName, password: user.password})
 						.then(function(res) {
 							res.should.have.status(200);
 						});

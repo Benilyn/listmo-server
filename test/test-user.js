@@ -175,8 +175,8 @@ describe('Users API resource', function() {
 					res.should.have.status(200);
 					return User.findById(user._id).exec();
 				})
-				.then(function(user) {
-					console.log(user);
+				.then(function(localUser) {
+					console.log(localUser);
 					return chai.request(app)
 						.post('/login')
 						.send({username: user.userName, password: user.password})

@@ -1,11 +1,18 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
 
 const {Project} = require('../models/projectModel');
 const {Task} = require('../models/taskModel');
 const {PORT, DATABASE_URL} = require('../config');
 
-router.post('/', (req, res) => {
+const jwtAuth = passport.authenticate('jwt', {session: false});
+
+router.get('/', (req, res)=>{
+	Project.find().then(projects=>res.send(projects));
+});
+
+router.post('/', jwtAuth, (req, res) => {
 	const requiredFields = ['projectTitle'];
 	for (let i=0; i<requiredFields.length; i++) {
 		const field = requiredFields[i];
@@ -16,13 +23,16 @@ router.post('/', (req, res) => {
 		} //if (!(field in req.body))
 	} //for (let i=0)
 
-	Project
-		.create({
+	let newProject = {
 			projectTitle: req.body.projectTitle,
 			projectDueDate: req.body.projectDueDate,
 			projectDetail: req.body.projectDetail,
-			user: req.body.user
-			})
+			user: req.user.id
+			};
+			console.log(newProject);
+
+	Project
+		.create(newProject)
 		.then (
 			project => res.status(201).json(project.apiRepr()))
 		.catch(err => {
@@ -31,9 +41,9 @@ router.post('/', (req, res) => {
 		});
 }); //router.post
 
-router.get('/user/:user', (req, res) => {
+router.get('/user',jwtAuth, (req, res) => {
 	Project
-		.find({user: req.params.user})
+		.find({user: req.user.id})
 		.then(projects => {
 			let projectTasks = [];
 			projects.map(project => {

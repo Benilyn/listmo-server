@@ -3,10 +3,11 @@ const Task = require('./taskModel.js');
 
 const projectSchema = mongoose.Schema({
 	projectTitle:{type: String, required: true},
-	projectDueDate: {type: String, default: ''},
+	projectDueDate: {type: Date, default: ''},
 	projectDetail:{type: String, default: ''},
 	projectTask: [{type: mongoose.Schema.ObjectId, ref: 'Task'}],
-	user: {type: mongoose.Schema.ObjectId, ref: 'User'}
+	user: {type: mongoose.Schema.ObjectId, ref: 'User'},
+	projectCreated:{type: Date, default: Date.now()}
 });
 
 projectSchema.methods.apiRepr = function() {
@@ -16,7 +17,8 @@ projectSchema.methods.apiRepr = function() {
 		projectDueDate: this.projectDueDate,
 		projectDetail: this.projectDetail,
 		projectTask: this.projectTask,
-		user: this.user
+		user: this.user,
+		projectCreated: this.projectCreated.toDateString()
 	};
 };
 

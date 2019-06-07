@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const {Task} = require('../models/taskModel');
+const {Project} = require('../models/projectModel');
 const {PORT, DATABASE_URL} = require('../config');
 
 router.post('/', (req, res) => {
@@ -15,26 +16,36 @@ router.post('/', (req, res) => {
 		} //if (!(field in req.body))
 	} //for (let i=0)
 
-	Task
-		.create({
+	let newTask = {
 			taskProject: req.body.taskProject,
 			taskTitle: req.body.taskTitle,
 			taskDueDate: req.body.taskDueDate,
 			taskDetail: req.body.taskDetail
-			})
-	//	.then(
-	//		task => task.populate('project'))
-		.then (
-			task => res.status(201).json(task.apiRepr()))
+			};
+			console.log(newTask);
+	Task
+		.create(newTask)
+		.then( task => {
+			Project.findOne({_id:task.taskProject})
+				.then(project=>{
+					project.projectTask = [...project.projectTask, task._id]
+					return project.save();
+				})
+				.then(updatedProject=>{
+					res.status(201).json(task.apiRepr());
+				});
+		})
 		.catch(err => {
 			console.error(err);
 			res.status(500).json({message: 'Internal server error'});
 		});
+	
 }); //router.post
 
 router.get('/', (req, res) => {
 	Task
 		.find()
+		.sort({taskCreated: -1})
 		.exec()
 		.then(tasks => {
 			res.json(tasks.map(task => task.apiRepr()));

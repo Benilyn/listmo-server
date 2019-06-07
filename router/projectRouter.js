@@ -41,22 +41,51 @@ router.post('/', jwtAuth, (req, res) => {
 		});
 }); //router.post
 
+router.get('/tasks',(req,res)=>{
+	Task.find().then(tasks=>res.send(tasks));
+});
+router.get('/projects',(req,res)=>{
+	Project.find()
+		.populate('projectTask')
+		.exec()
+		.then(projects=>{let projectTasks = [];
+			projects.map(project => {
+
+				Task.find({taskProject: project._id})
+				.then(tasks => {
+					project.projectTask = tasks;
+					console.log(tasks.length)
+					projectTasks.push(project.apiRepr());
+				}) //.then(tasks => {
+			}) //projects.map
+			res.send(projects);
+		})
+		.catch(err => {
+			console.error(err);
+			res.status(500).json({error: 'Something went wrong'});
+		});
+});
+
 router.get('/user',jwtAuth, (req, res) => {
+	//let created = {projectCreated: 1};
 	Project
 		.find({user: req.user.id})
+		.sort({projectTitle: 1})
+		.populate('projectTask')
+		.exec()
 		.then(projects => {
+//			console.log(projects);
 			let projectTasks = [];
 			projects.map(project => {
 
 				Task.find({taskProject: project._id})
 				.then(tasks => {
 					project.projectTask = tasks;
+					console.log(tasks.length)
 					projectTasks.push(project.apiRepr());
 				}) //.then(tasks => {
 			}) //projects.map
-			setTimeout(function () {
-				res.json(projectTasks);
-			}, 100);
+			res.send(projects);
 
 		}) //.then(projects => {
 		.catch(err => {
@@ -115,11 +144,11 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
 	Project
-		.findOneAndRemove({_id: req.params.id})
+		.findOneAndRemove({_id: req.params._id})
 		.exec()
 		.then((delproj) => {
 			console.log(delproj);
-			console.log(`Deleted project \`${req.params.id}\``);
+			console.log(`Deleted project \`${req.params._id}\``);
 			res.status(204).end();
 		})
 		.catch(err => {

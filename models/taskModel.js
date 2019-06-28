@@ -14,7 +14,7 @@ TaskSchema.methods.apiRepr = function() {
 		taskProject: this.taskProject,
 		id: this._id,
 		taskTitle: this.taskTitle,
-		taskDueDate: this.taskDueDate.toDateString(),
+		taskDueDate: this.taskDueDate,
 		taskDetail: this.taskDetail,
 		taskCreated: this.taskCreated
 	};

@@ -14,7 +14,7 @@ projectSchema.methods.apiRepr = function() {
 	return {
 		id: this._id,
 		projectTitle: this.projectTitle,
-		projectDueDate: this.projectDueDate.toDateString(),
+		projectDueDate: this.projectDueDate,
 		projectDetail: this.projectDetail,
 		projectTask: this.projectTask,
 		user: this.user,
